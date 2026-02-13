@@ -74,6 +74,12 @@ const p1ScoreEl = document.getElementById('p1score');
 const p2ScoreEl = document.getElementById('p2score');
 const messageEl = document.getElementById('message');
 
+function secureRandom() {
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  return array[0] / (0xffffffff + 1);
+}
+
 let W, H;
 let paddleW, paddleH, ballSize;
 let gameRunning = false;
@@ -130,7 +136,7 @@ function resetBall(direction) {
   ball.x = W / 2 - ballSize / 2;
   ball.y = H / 2 - ballSize / 2;
   ball.speed = Math.max(3, W * 0.005);
-  const angle = (Math.random() * Math.PI / 3) - Math.PI / 6;
+  const angle = (secureRandom() * Math.PI / 3) - Math.PI / 6;
   ball.dx = ball.speed * Math.cos(angle) * direction;
   ball.dy = ball.speed * Math.sin(angle);
 }
@@ -170,7 +176,7 @@ function update() {
 
   if (Math.abs(diff) > deadzone) {
     const move = Math.min(cpuSpeed, Math.abs(diff)) * Math.sign(diff);
-    cpu.y += move * (0.7 + Math.random() * 0.3);
+    cpu.y += move * (0.7 + secureRandom() * 0.3);
   }
   cpu.y = Math.max(0, Math.min(H - paddleH, cpu.y));
 
