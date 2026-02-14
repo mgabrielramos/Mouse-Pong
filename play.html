@@ -135,6 +135,27 @@ function resetBall(direction) {
   ball.dy = ball.speed * Math.sin(angle);
 }
 
+function handleScore(playerIndex) {
+  const scoreKey = playerIndex === 1 ? 'p1' : 'p2';
+  const scoreEl = playerIndex === 1 ? p1ScoreEl : p2ScoreEl;
+
+  scores[scoreKey]++;
+  scoreEl.textContent = scores[scoreKey];
+  flashScore(scoreEl);
+
+  if (scores.p1 >= 11 || scores.p2 >= 11) {
+    gameRunning = false;
+    const winner = scores.p1 >= 11 ? '🏓 Player wins!' : '🤖 CPU wins!';
+    messageEl.textContent = winner + ' Click to play again.';
+    scores.p1 = 0;
+    scores.p2 = 0;
+    p1ScoreEl.textContent = '0';
+    p2ScoreEl.textContent = '0';
+  } else {
+    resetBall(playerIndex === 1 ? -1 : 1);
+  }
+}
+
 function init() {
   resize();
   player.y = H / 2 - paddleH / 2;
@@ -209,25 +230,10 @@ function update() {
 
   // Scoring
   if (ball.x + ballSize < 0) {
-    scores.p2++;
-    p2ScoreEl.textContent = scores.p2;
-    flashScore(p2ScoreEl);
-    resetBall(1);
+    handleScore(2);
   }
   if (ball.x > W) {
-    scores.p1++;
-    p1ScoreEl.textContent = scores.p1;
-    flashScore(p1ScoreEl);
-    resetBall(-1);
-  }
-
-  if (scores.p1 >= 11 || scores.p2 >= 11) {
-    gameRunning = false;
-    const winner = scores.p1 >= 11 ? '🏓 Player wins!' : '🤖 CPU wins!';
-    messageEl.textContent = winner + ' Click to play again.';
-    scores.p1 = 0; scores.p2 = 0;
-    p1ScoreEl.textContent = '0';
-    p2ScoreEl.textContent = '0';
+    handleScore(1);
   }
 }
 
