@@ -307,7 +307,19 @@ function loop() {
 }
 
 // Event listeners
-window.addEventListener('resize', resize);
+let resizeTicking = false;
+window.addEventListener('resize', () => {
+  if (!resizeTicking) {
+    resizeTicking = true;
+    requestAnimationFrame(() => {
+      try {
+        resize();
+      } finally {
+        resizeTicking = false;
+      }
+    });
+  }
+});
 
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
