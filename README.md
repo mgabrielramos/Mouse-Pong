@@ -11,6 +11,7 @@ O jogo Pong é uma recreação digital do jogo de tênis de mesa, onde dois joga
 - HTML5
 - CSS3
 - JavaScript (ES6+)
+- Node.js (para testes)
 
 ### Funcionalidades
 
@@ -22,11 +23,15 @@ O jogo Pong é uma recreação digital do jogo de tênis de mesa, onde dois joga
 
 ## Estrutura do Projeto
 
-- `play.html`: Arquivo principal contendo toda a estrutura HTML, estilos CSS e lógica JavaScript do jogo.
+- `play.html`: Arquivo principal contendo a estrutura HTML e estilos CSS. Agora utiliza o código JavaScript modularizado.
+- `js/game.js`: Lógica do jogo extraída e modularizada para facilitar testes e manutenção.
+- `tests/game.test.js`: Suite de testes unitários para a lógica do jogo.
+- `package.json`: Configuração do projeto e scripts de teste.
 
 ## Como Executar
 
 Para executar o jogo, basta abrir o arquivo `play.html` em qualquer navegador web moderno.
+*Nota: Devido ao uso de módulos ES, alguns navegadores podem exigir que o arquivo seja servido via um servidor local (ex: `npx serve .`) para evitar problemas de CORS.*
 
 ## Controles
 
@@ -34,20 +39,23 @@ Para executar o jogo, basta abrir o arquivo `play.html` em qualquer navegador we
 - **Teclado**: Use as setas para cima e para baixo para mover sua paleta
 - **Clique ou Espaço**: Iniciar o jogo ou reiniciar após vitória
 
+## Testes
+
+Este projeto inclui uma suite de testes unitários para garantir a estabilidade da lógica do jogo (detecção de colisão, física da bola, pontuação, etc.).
+
+Para executar os testes, você precisará do Node.js (v18+) instalado.
+
+```bash
+npm test
+```
+
 ## Desenvolvimento
 
-O jogo foi implementado com uma abordagem de código único (monolítico), onde todo o HTML, CSS e JavaScript estão contidos em um único arquivo. Isso facilita a distribuição e execução sem necessidade de servidores ou configurações adicionais.
-
-### Estilo de Código
-
-- Utiliza-se `const` e `let` para declaração de variáveis
-- Funções nomeadas para organizar a lógica do jogo
-- Uso de `requestAnimationFrame` para loop de jogo suave
-- Estilos definidos com CSS moderno incluindo Flexbox e propriedades de sombra
+O jogo foi refatorado de uma abordagem monolítica para uma estrutura modular, permitindo a implementação de testes unitários automatizados. A lógica central reside em `js/game.js` e é importada como um módulo ES em `play.html`.
 
 ### Práticas de Codificação
 
-- Código JavaScript estruturado em funções específicas para cada parte da lógica do jogo
-- Uso de `Math.random()` para variação na inteligência artificial da CPU
-- Implementação de colisões retangulares para detecção de contato entre paletas e bola
-- Animação suave com interpolação para movimento da paleta do jogador quando usando mouse
+- Código JavaScript estruturado em funções específicas e testáveis.
+- Uso de `export` para expor o estado e as funções do jogo.
+- Testes automatizados usando o test runner nativo do Node.js.
+- Manutenção da compatibilidade com o loop de jogo `requestAnimationFrame`.
